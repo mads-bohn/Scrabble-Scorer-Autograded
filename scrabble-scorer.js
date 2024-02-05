@@ -12,6 +12,8 @@ const oldPointStructure = {
   10: ['Q', 'Z']
 };
 
+const vowels = ['A', 'E', 'I', 'O', 'U'];
+
 function oldScrabbleScorer(word) {
 	word = word.toUpperCase();
 	let letterPoints = "";
@@ -35,28 +37,65 @@ function oldScrabbleScorer(word) {
 function initialPrompt() {
    console.log("Let's play some scrabble!");
    let userWord = input.question("Enter a word: ");
-   console.log(oldScrabbleScorer(userWord));
    return userWord;
 };
 
-let simpleScorer;
+function simpleScorer(word) {
+   return word.length;
+}
 
-let vowelBonusScorer;
+function vowelBonusScorer(word) {
+   word = word.toUpperCase();
+   let letterPoints = 0;
+
+   for (let i = 0; i < word.length; i++) {
+      if (vowels.includes(word[i])) {
+         letterPoints += 3;
+      } else {
+         letterPoints++;
+      }
+   }
+   return letterPoints;
+};
 
 let scrabbleScorer;
 
-const scoringAlgorithms = [];
+const scoringAlgorithms = [
+   {
+      name: 'Simple Score',
+      description: 'Each letter is worth 1 point.',
+      scoringFunction: simpleScorer
+   },
+   {
+      name: 'Bonus Vowels',
+      description: 'Vowels are 3 pts, consonants are 1 pt.',
+      scoringFunction: vowelBonusScorer
+   },
+   {
+      name: 'Scrabble',
+      description: 'The traditional scoring algorithm.',
+      scoringFunction: oldScrabbleScorer
+   }
+];
 
-function scorerPrompt() {}
+function scorerPrompt(userWord) {
+   console.log(`Which scoring algorithim would you like to use?
+   0 - Simple: One point per character
+   1 - Vowel Bonus: Vowels are worth 3 points
+   2 - Scrabble: Uses scrabble point system`);
+   let userChoice = input.question('Enter 0, 1, or 2: ');
+   console.log(`Score for ${userWord}: ${scoringAlgorithms[userChoice].scoringFunction(userWord)}`);
+   return scoringAlgorithms[userChoice].scoringFunction;
+}
 
 function transform() {};
 
 let newPointStructure;
 
 function runProgram() {
-   initialPrompt();
-   
+   scorerPrompt(initialPrompt());
 }
+
 
 // Don't write any code below this line //
 // And don't change these or your program will not run as expected //
