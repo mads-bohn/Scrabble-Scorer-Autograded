@@ -12,7 +12,6 @@ const oldPointStructure = {
   10: ['Q', 'Z']
 };
 
-const vowels = ['A', 'E', 'I', 'O', 'U'];
 
 function oldScrabbleScorer(word) {
 	word = word.toUpperCase();
@@ -46,6 +45,7 @@ function simpleScorer(word) {
 
 function vowelBonusScorer(word) {
    word = word.toUpperCase();
+   const vowels = ['A', 'E', 'I', 'O', 'U'];
    let letterPoints = 0;
 
    for (let i = 0; i < word.length; i++) {
@@ -88,7 +88,17 @@ function scorerPrompt(userWord) {
    return scoringAlgorithms[userChoice].scorerFunction;
 }
 
-function transform() {};
+function transform(pointStructure) {
+   let transformedStructure = {};
+   for (let key in pointStructure) {
+      for (i = 0; i < pointStructure[key].length; i++) {
+         transformedStructure[pointStructure[key][i]] = key;
+      }
+   }
+   return transformedStructure;
+}
+
+console.log(transform(oldPointStructure));
 
 let newPointStructure;
 
