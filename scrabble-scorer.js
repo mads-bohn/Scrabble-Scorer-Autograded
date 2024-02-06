@@ -58,7 +58,14 @@ function vowelBonusScorer(word) {
    return letterPoints;
 };
 
-let scrabbleScorer;
+function scrabbleScorer(word) {
+   word = word.toUpperCase();
+   let letterPoints = 0;
+   for (let i = 0; i < word.length; i++) {
+      letterPoints += newPointStructure[word[i]];
+   }
+   return letterPoints;
+}
 
 const scoringAlgorithms = [
    {
@@ -74,7 +81,7 @@ const scoringAlgorithms = [
    {
       name: 'Scrabble',
       description: 'The traditional scoring algorithm.',
-      scorerFunction: oldScrabbleScorer
+      scorerFunction: scrabbleScorer
    }
 ];
 
@@ -92,15 +99,13 @@ function transform(pointStructure) {
    let transformedStructure = {};
    for (let key in pointStructure) {
       for (i = 0; i < pointStructure[key].length; i++) {
-         transformedStructure[pointStructure[key][i]] = key;
+         transformedStructure[pointStructure[key][i]] = Number(key);
       }
    }
    return transformedStructure;
 }
 
-console.log(transform(oldPointStructure));
-
-let newPointStructure;
+let newPointStructure = transform(oldPointStructure);
 
 function runProgram() {
    scorerPrompt(initialPrompt());
